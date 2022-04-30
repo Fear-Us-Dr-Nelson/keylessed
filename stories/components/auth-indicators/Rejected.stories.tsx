@@ -4,9 +4,14 @@ import { Rejected as RejectComponent} from "../../../components/auth-indicators"
 export default {
   title: "Auth Indicators/Animations/Rejected",
   component: RejectComponent,
+  argTypes: {
+    label: {
+      control: "text"
+    }
+  }
 };
 
-export const Rejected = () => {
+export const Rejected = args => {
   const [renderKey, setRenderKey] = useState(0);
   const replay = () => {
     setRenderKey(renderKey + 1);
@@ -14,8 +19,8 @@ export const Rejected = () => {
   
   return (
     <div>
-      <RejectComponent key={renderKey} />
+      <RejectComponent key={renderKey} {...args} />
       <button onClick={() => replay()}>Replay Animation</button>
     </div>
-  )
+  );
 }

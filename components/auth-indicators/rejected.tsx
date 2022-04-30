@@ -2,7 +2,13 @@ import React from "react";
 import clsx from "clsx";
 import styles from "../../styles/components/auth-indicators/Rejected.module.scss";
 
-export const Rejected = () => {
+export const Rejected = (props : {
+    label?: string
+}) => {
+    const {
+        label = "Unauthorized!"
+    } = props;
+
     return (
         <div>
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
@@ -41,7 +47,7 @@ export const Rejected = () => {
                     y2="92.2"
                 />
             </svg>
-            <p className={styles.error}>Bummer!</p>
+            <p className={styles.error}>{ label }</p>
         </div>
     )
 }
