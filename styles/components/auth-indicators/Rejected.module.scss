@@ -1,0 +1,10 @@
+@import "./index.module.scss";
+
+p.error {
+    color: #D06079;
+}
+
+.path.line {
+    stroke-dashoffset: 1000;
+    animation: dash .9s .35s ease-in-out forwards;
+}
