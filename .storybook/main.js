@@ -1,3 +1,5 @@
+const webpack = require("webpack")
+
 module.exports = {
   "stories": [
     "../stories/**/*.stories.mdx",
@@ -15,15 +17,15 @@ module.exports = {
   },
   staticDirs: ['../public'],
   webpackFinal: async (config, { configType }) => {
-    const rules = config.module.rules;
-    const fileLoaderRule = rules.find(rule => rule.test.test('.svg'));
-    fileLoaderRule.exclude = /\.svg$/;
-
-    rules.push({
-      test: /\.svg$/,
-      use: ["@svgr/webpack"],
-    });
-
+    config.plugins.push(
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+        Buffer: ['buffer', 'Buffer'],
+      })
+    );
+    config.resolve.fallback = {
+      buffer: require.resolve("buffer/")
+    }
     return config;
   }
 }
