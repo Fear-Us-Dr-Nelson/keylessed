@@ -1,10 +1,57 @@
+import { useEffect, useState } from 'react';
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Feed from '../components/feed'
+import mqtt, { IClientOptions } from "mqtt";
+import { Authorized, Rejected } from '../components/auth-indicators';
 import styles from '../styles/pages/Home.module.scss'
 
 const Home: NextPage = () => {
+  const [authVisible, setAuthVisible] = useState(false);
+  const [rejectVisible, setRejectVisible] = useState(false);
+  const [authGesture, setAuthGesture] = useState(false);
+  const [authDoor, setAuthDoor] = useState(false);
+
+  const mqttOptions: IClientOptions = {
+    protocol: "mqtts",
+    clientId: "abc123"
+  }
+
+  const handleMessage = (msg: string) => {
+    switch(msg) {
+      case "door_yes":
+        setAuthDoor(true);
+        break;
+      case "gesture_yes":
+        setAuthGesture(true);
+        break;
+      case "auth_yes":
+        setAuthVisible(true);
+        setTimeout(() => {
+          setAuthVisible(false);
+        }, 3000);
+        break;
+      case "auth_no":
+        setRejectVisible(true);
+        setTimeout(() => {
+          setRejectVisible(false);
+        }, 3000);
+        break;
+      default:
+        console.error("Unknown message!");
+    }
+  }
+  
+  useEffect(() => {
+    const client = mqtt.connect('mqtt://broker.hivemq.com', mqttOptions);
+    client.subscribe("csce5013/keylessed");
+    client.on('message', (topic, msg) => {
+      console.log(`${topic}: ${msg.toString()}`);
+      handleMessage(msg.toString());
+    });
+  }, []);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -14,7 +61,10 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <Feed />
+        <Feed>
+          { authVisible ? <Authorized /> : null }
+          { rejectVisible ? <Rejected /> : null }
+        </Feed>
       </main>
 
       <footer className={styles.footer}>
