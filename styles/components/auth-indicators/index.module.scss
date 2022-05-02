@@ -2,6 +2,7 @@
 
 .authIndicator {
     background: radial-gradient(circle at center, black 0, transparent 100%);
+    animation: fadeBackground 0.25s ease-in;
     
     svg {
         width: 100px;
@@ -30,6 +31,15 @@
         }
         100% {
             stroke-dashoffset: 0;
+        }
+    }
+
+    @keyframes fadeBackground {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
         }
     }
 }
