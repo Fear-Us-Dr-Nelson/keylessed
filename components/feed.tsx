@@ -1,7 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { ReactNode, useEffect, useRef } from "react";
 import styles from "../styles/components/Feed.module.scss";
 
-const Feed = () => {
+const Feed = (props: {
+    children?: ReactNode
+}) => {
     const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
@@ -9,13 +11,22 @@ const Feed = () => {
     }, [])
 
     return (
-        <video
-            ref={videoRef}
-            muted
-            src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-            height={768}
-            width={720}
-        />
+        <div className={styles.feed}>
+            <video
+                ref={videoRef}
+                muted
+                src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                height={768}
+                width={720}
+            />
+            {
+                props.children ?
+                    <div className={styles.overlay}>
+                        {props.children}
+                    </div>
+                : null
+            }
+        </div>
     )
 }
 
