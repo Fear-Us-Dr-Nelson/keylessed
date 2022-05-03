@@ -12,11 +12,18 @@ const Home: NextPage = () => {
   const [rejectVisible, setRejectVisible] = useState(false);
   const [authGesture, setAuthGesture] = useState(false);
   const [authDoor, setAuthDoor] = useState(false);
+  const [client, setClient] = useState(null);
 
-  const mqttOptions: IClientOptions = {
-    protocol: "mqtts",
-    clientId: "abc123"
-  }
+  const mqttConnect = () => {
+    console.log('Connecting');
+    return mqtt.connect("ws://broker.hivemq.com", {
+      protocol: "ws",
+      clientId: "abc123",
+      username: "rrp003",
+      port: 8000,
+      path: "/mqtt"
+    });
+  };
 
   const handleMessage = (msg: string) => {
     switch(msg) {
@@ -42,15 +49,31 @@ const Home: NextPage = () => {
         console.error("Unknown message!");
     }
   }
-  
+
   useEffect(() => {
-    const client = mqtt.connect('mqtt://broker.hivemq.com', mqttOptions);
-    client.subscribe("csce5013/keylessed");
-    client.on('message', (topic, msg) => {
-      console.log(`${topic}: ${msg.toString()}`);
-      handleMessage(msg.toString());
-    });
-  }, []);
+    if (client) {
+      console.log(client)
+      client.subscribe("keylessed", { qos: 1 }, (error) => {
+        if (error) {
+          console.log('Subscribe to topics error', error)
+          return
+        }
+        console.log("Subscribed to topic!")
+      });
+      client.on('error', (err) => {
+        console.error('Connection error: ', err);
+        client.end();
+      });
+      client.on('message', (topic, msg) => {
+        console.log(`${topic}: ${msg.toString()}`);
+        handleMessage(msg.toString());
+      });
+    }
+  }, [client]);
+
+  useEffect(() => {
+    setClient(mqttConnect());
+  }, [])
 
   return (
     <div className={styles.container}>
