@@ -13,7 +13,7 @@ const Home: NextPage = () => {
   const [rejectVisible, setRejectVisible] = useState(false);
   const [authGesture, setAuthGesture] = useState(false);
   const [authDoor, setAuthDoor] = useState(false);
-  const [client, setClient] = useState(null);
+  const [client, setClient] = useState<mqtt.MqttClient>(null);
   const [serverStatus, setServerStatus] = useState<Status>("loading");
 
   const mqttConnect = () => {
