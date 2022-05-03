@@ -16,8 +16,6 @@ const Feed = (props: {
                 ref={videoRef}
                 muted
                 src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-                height={768}
-                width={720}
             />
             {
                 props.children ?

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import Feed from '../components/feed'
 import mqtt, { IClientOptions } from "mqtt";
 import { Authorized, Rejected } from '../components/auth-indicators';
