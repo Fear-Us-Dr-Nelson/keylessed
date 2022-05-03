@@ -5,6 +5,8 @@ import Image from 'next/image'
 import Feed from '../components/feed'
 import mqtt, { IClientOptions } from "mqtt";
 import { Authorized, Rejected } from '../components/auth-indicators';
+import { StatusIndicator } from '../components/status';
+import { Status } from '../components/types';
 import styles from '../styles/pages/Home.module.scss'
 
 const Home: NextPage = () => {
@@ -13,6 +15,7 @@ const Home: NextPage = () => {
   const [authGesture, setAuthGesture] = useState(false);
   const [authDoor, setAuthDoor] = useState(false);
   const [client, setClient] = useState(null);
+  const [serverStatus, setServerStatus] = useState<Status>("loading");
 
   const mqttConnect = () => {
     console.log('Connecting');
@@ -56,12 +59,15 @@ const Home: NextPage = () => {
       client.subscribe("keylessed", { qos: 1 }, (error) => {
         if (error) {
           console.log('Subscribe to topics error', error)
+          setServerStatus("error");
           return
         }
+        setServerStatus("ok");
         console.log("Subscribed to topic!")
       });
       client.on('error', (err) => {
         console.error('Connection error: ', err);
+        setServerStatus("error");
         client.end();
       });
       client.on('message', (topic, msg) => {
@@ -72,6 +78,7 @@ const Home: NextPage = () => {
   }, [client]);
 
   useEffect(() => {
+    setServerStatus("loading");
     setClient(mqttConnect());
   }, [])
 
@@ -91,16 +98,13 @@ const Home: NextPage = () => {
       </main>
 
       <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
+        <div>
+          <StatusIndicator variant={authGesture ? "ok" : "error"} label="Gesture" />
+          <StatusIndicator variant={authDoor ? "ok" : "error"} label="Door" />
+        </div>
+        <div>
+          <StatusIndicator variant={serverStatus} label="Server Status" />
+        </div>
       </footer>
     </div>
   )
