@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Feed from '../components/feed'
+import mqtt from "mqtt";
 import forge from "node-forge";
 import { Authorized, Rejected } from '../components/auth-indicators';
 import { StatusIndicator } from '../components/status';
