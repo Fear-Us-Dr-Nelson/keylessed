@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Feed from '../components/feed'
-import mqtt, { IClientOptions } from "mqtt";
+import forge from "node-forge";
 import { Authorized, Rejected } from '../components/auth-indicators';
 import { StatusIndicator } from '../components/status';
 import { Status } from '../components/types';
@@ -20,7 +20,7 @@ const Home: NextPage = () => {
     console.log('Connecting');
     return mqtt.connect("ws://broker.hivemq.com", {
       protocol: "ws",
-      clientId: "abc123",
+      clientId: forge.util.bytesToHex(forge.random.getBytesSync(7)),
       username: "rrp003",
       port: 8000,
       path: "/mqtt"
