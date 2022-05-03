@@ -1,6 +1,6 @@
 import React from "react";
 import { PulseLoader } from "react-spinners";
-import styles from "../styles/components/StatusIndicator.module.scss";
+import styles from "../../styles/components/status/StatusIndicator.module.scss";
 
 export const StatusIndicator = (props: {
     variant: "ok" | "loading" | "error",
