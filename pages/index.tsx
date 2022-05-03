@@ -80,10 +80,15 @@ const Home: NextPage = () => {
         console.log(`${topic}: ${msg.toString()}`);
         handleMessage(msg.toString());
       });
+      client.on("disconnect", (packet) => {
+        setServerStatus("error");
+        console.error("Broker disconnected ", packet.properties.reasonString)
+      });
     }
   }, [client]);
 
   useEffect(() => {
+    console.log("Beginning connection to broker");
     setServerStatus("loading");
     setClient(mqttConnect());
   }, [])
