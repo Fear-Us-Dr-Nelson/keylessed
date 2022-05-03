@@ -27,6 +27,13 @@ const Home: NextPage = () => {
     });
   };
 
+  const clearAll = () => {
+    setAuthVisible(false);
+    setRejectVisible(false);
+    setAuthDoor(false);
+    setAuthGesture(false);
+  }
+
   const handleMessage = (msg: string) => {
     switch(msg) {
       case "door_yes":
@@ -38,13 +45,13 @@ const Home: NextPage = () => {
       case "auth_yes":
         setAuthVisible(true);
         setTimeout(() => {
-          setAuthVisible(false);
+          clearAll();
         }, 3000);
         break;
       case "auth_no":
         setRejectVisible(true);
         setTimeout(() => {
-          setRejectVisible(false);
+          clearAll();
         }, 3000);
         break;
       default:
