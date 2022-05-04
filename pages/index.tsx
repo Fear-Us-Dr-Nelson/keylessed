@@ -63,7 +63,7 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (client) {
       console.log(client)
-      client.subscribe("keylessed", { qos: 1 }, (error) => {
+      client.subscribe("uark/CSCE5013/dbomrp", { qos: 1 }, (error) => {
         if (error) {
           console.log('Subscribe to topics error', error)
           setServerStatus("error");
