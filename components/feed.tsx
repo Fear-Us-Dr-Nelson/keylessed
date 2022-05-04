@@ -1,21 +1,13 @@
-import React, { ReactNode, useEffect, useRef } from "react";
+import React, { ReactNode } from "react";
 import styles from "../styles/components/Feed.module.scss";
 
 const Feed = (props: {
     children?: ReactNode
 }) => {
-    const videoRef = useRef<HTMLVideoElement>(null);
-
-    useEffect(() => {
-        videoRef.current?.play();
-    }, [])
-
     return (
         <div className={styles.feed}>
-            <video
-                ref={videoRef}
-                muted
-                src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+            <img
+                src="http://localhost:5000/video_feed"
             />
             {
                 props.children ?
